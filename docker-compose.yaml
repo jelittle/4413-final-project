@@ -1,16 +1,31 @@
-version: '3.8'
+
 
 services:
   reverse-proxy:
     build: ./nginx
-    image: nginx-proxy
-    volumes:
-      - type: bind
+    # image: nginx-proxy
+    ports:
+      - 8080:80
+    depends_on:
+      - catalogue
+      - payment
+      - users
 
   catalogue:
     build: ./CatalogueService
     image: catalogue-service
     container_name: catalogue-service
+
+  analytics:
+    build: ./Analytics
+    image: analytics-service
+    container_name: analytics-service
+
+  payment:
+    build: ./PaymentService
+    image: payment-service
+    container_name: payment-service
+
   users:
     build: ./UserService
     image: user-service
