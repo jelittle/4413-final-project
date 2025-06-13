@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  reverse-proxy:
+    build: ./nginx
+    image: nginx-proxy
+    volumes:
+      - type: bind
+
+  catalogue:
+    build: ./CatalogueService
+    image: catalogue-service
+    container_name: catalogue-service
+  users:
+    build: ./UserService
+    image: user-service
+    container_name: user-service
