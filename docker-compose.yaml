@@ -30,3 +30,13 @@ services:
     build: ./UserService
     image: user-service
     container_name: user-service
+
+  mongo-container:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - catalogue_volume:/data/db
+
+volumes:
+  catalogue_volume:
