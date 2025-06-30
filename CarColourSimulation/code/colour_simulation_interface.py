@@ -8,11 +8,5 @@ class ColourSimulationInterface(ABC):
         """
         Simulate a specific colour on the provided image.
 
-        Args:
-            image_bytes: Raw image bytes
-            colour: Colour to simulate (e.g., 'red', 'blue')
-
-        Returns:
-            Bytes of the modified image with the simulated colour.
         """
         pass

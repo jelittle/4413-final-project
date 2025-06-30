@@ -30,6 +30,10 @@ services:
     build: ./UserService
     image: user-service
     container_name: user-service
+  colour_sim:
+    build: ./CarColourSimulation
+    image: colour-sim-service
+    container_name: colour-sim-service
 
   mongo-container:
     image: mongo:latest

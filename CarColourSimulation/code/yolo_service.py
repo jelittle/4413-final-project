@@ -13,8 +13,6 @@ class YoloService(YoloInterface):
         """
         Initialize YOLO service.
 
-        Args:
-            model_path: Path to the YOLO model file
         """
         self.model_path = model_path
         # Load the YOLO model here (e.g., using ultralytics or another library)
@@ -24,11 +22,6 @@ class YoloService(YoloInterface):
         """
         Get segmentation masks and corresponding labels.
 
-        Args:
-            image_bytes: Raw image bytes
-
-        Returns:
-            Tuple of (combined_mask_array, list_of_labels)
         """
         # Load image from bytes
        

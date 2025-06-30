@@ -14,9 +14,6 @@ class ColourSimulation(ColourSimulationInterface):
     def __init__(self, model_path: str = 'colour_simulation_model.pt'):
         """
         Initialize ColourSimulation service.
-
-        Args:
-            model_path: Path to the colour simulation model file
         """
         self.model_path = model_path
         # load model
@@ -42,12 +39,6 @@ class ColourSimulation(ColourSimulationInterface):
         """
         Simulate a specific colour on the provided image.
 
-        Args:
-            image_bytes: Raw image bytes
-            colour: Colour to simulate (e.g., 'red', 'blue')
-
-        Returns:
-            Bytes of the modified image with the simulated colour.
         """
         #get masks 
         image = Image.open(io.BytesIO(image_bytes))
