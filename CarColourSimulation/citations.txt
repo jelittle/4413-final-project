@@ -1,0 +1,7 @@
+car 1 taken from:https://www.autotrader.co.uk/cars/leasing/product/202412107157385?leaseOption=12_24_5000&fromhome=&colour=Two+coat+metallic+-+Carbon+black&trim=ReNewKnit+fabric%2Fleather+-+Black+renewknit+seat+trim+inserts+with+black+vegan+leather+seat+bolsters
+
+car 2 pictures taken from:https://www.arenaev.com/porsche_taycan-pictures-241.php
+
+
+carparts training for model :https://colab.research.google.com/github/ultralytics/notebooks/blob/main/notebooks/how-to-train-ultralytics-yolo-on-carparts-segmentation-dataset.ipynb
+    modified to output car panels rather than seperate body part
