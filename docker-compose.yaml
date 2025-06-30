@@ -13,26 +13,27 @@ services:
 
   catalogue:
     build: ./CatalogueService
-    image: catalogue-service
+    # image: catalogue-service
     container_name: catalogue-service
 
   analytics:
     build: ./Analytics
-    image: analytics-service
+    # image: analytics-service
     container_name: analytics-service
 
   payment:
     build: ./PaymentService
-    image: payment-service
+    # image: payment-service
     container_name: payment-service
 
   users:
     build: ./UserService
-    image: user-service
+    # image: user-service
     container_name: user-service
+    
   colour_sim:
     build: ./CarColourSimulation
-    image: colour-sim-service
+    # image: colour-sim-service
     container_name: colour-sim-service
 
   mongo-container:
