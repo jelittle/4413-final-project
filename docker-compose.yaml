@@ -38,5 +38,16 @@ services:
     volumes:
       - catalogue_volume:/data/db
 
+  mssql-container:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "StrongPassword123"
+    ports:
+      - 1433:1433
+    volumes:
+      - sqlserverdata:/var/opt/mssql
+
 volumes:
   catalogue_volume:
+  sqlserverdata:
