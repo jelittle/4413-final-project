@@ -5,3 +5,6 @@ car 2 pictures taken from:https://www.arenaev.com/porsche_taycan-pictures-241.ph
 
 carparts training for model :https://colab.research.google.com/github/ultralytics/notebooks/blob/main/notebooks/how-to-train-ultralytics-yolo-on-carparts-segmentation-dataset.ipynb
     modified to output car panels rather than seperate body part
+
+
+https://apidog.com/blog/fastapi-grpc/
