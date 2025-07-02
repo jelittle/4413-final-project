@@ -1,8 +1,12 @@
 package com.user.userService.models;
 
-@Entity
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.GeneratedValue;
+//import jakarta.persistence.Id;
+
+//@Entity
 public class Vehicle {
-    @Id
+//    @Id
     private Long purchaseId;            // PK
     String vehicleId;
 

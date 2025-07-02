@@ -1,10 +1,14 @@
 package com.user.userService.models;
 
-@Entity
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.GeneratedValue;
+//import jakarta.persistence.Id;
+
+//@Entity
 public class Review {
-    @Id
+//    @Id
     private Long userId;        // PK
-    @Id
+//    @Id
     private String vehicleId;   // PK
     private String reviewTitle;
     private String reviewBody;

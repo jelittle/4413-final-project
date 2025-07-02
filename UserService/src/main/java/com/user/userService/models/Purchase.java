@@ -2,11 +2,15 @@ package com.user.userService.models;
 
 import java.util.List;
 
-@Entity
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.GeneratedValue;
+//import jakarta.persistence.Id;
+
+//@Entity
 public class Purchase {
-    @Id
+//    @Id
     private Long userId;            // PK
-    @Id
+//    @Id
     private Long purchaseId;        // PK
     private String purchaseDate;
 
