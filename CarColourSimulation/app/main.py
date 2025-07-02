@@ -1,7 +1,10 @@
+import io
 from fastapi import FastAPI, File, UploadFile, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 import logging
 from typing import Dict, Any
+
+import numpy as np
 from colour_simulation_service import ColourSimulation
 
 #logging is always good
@@ -24,22 +27,13 @@ except Exception as e:
     colour_simulation_service = None
 
 @app.post("/simulate_colour")
-async def simulate_colour(file: UploadFile ,colour:list[float]):
-    """
-    Simulate a specific colour on the provided image.
-
-    """
-    if colour_simulation_service is None:
-        raise HTTPException(status_code=500, detail="Colour Simulation Service not available")
-    
-    # Validate file type
-    if not file.content_type or not file.content_type.startswith('image/'):
-        raise HTTPException(status_code=400, detail="File must be an image")
-    
+async def simulate_colour(file: UploadFile, r:int,g:int,b:int):
+    colour=np.array([r,g,b])
+  
     try:
         image_bytes = await file.read()
         modified_image_bytes = colour_simulation_service.simulate_colour_on_body(image_bytes, colour)
-        return JSONResponse(content={"image": modified_image_bytes})
+        return StreamingResponse(io.BytesIO(modified_image_bytes.getvalue()), media_type="image/png")
     except Exception as e:
         logger.error(f"Error simulating colour: {e}")
-        raise HTTPException(status_code=500, detail="Error simulating colour")
+        raise HTTPException(status_code=500, detail=f"Error simulating colour: {e}")

@@ -5,6 +5,7 @@ from yolo_service import YoloService
 from PIL import Image
 import io
 import torch
+import os
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
 
@@ -17,7 +18,10 @@ class ColourSimulation(ColourSimulationInterface):
         """
         self.model_path = model_path
         # load model
-        self.model = YoloService(model_path='CarColourSimulation/models/best.pt')
+     
+
+
+        self.model = YoloService(model_path='./app/models/best.pt')
     def resize_masks_to_original(self,masks, orig_h, orig_w):
         """
         Resize a mask tensor to the original image size.
@@ -56,8 +60,8 @@ class ColourSimulation(ColourSimulationInterface):
         target_colour = torch.tensor(colour, dtype=torch.float32)
         colour_transform = self.compute_colour_transform(mean_colour, target_colour)
         new_image = self.apply_colour_transform(image_matrix,group_masks['body_panels'], colour_transform)
-        # prep to send image back 
-        plt.imsave("colour_change_image.png", new_image.numpy().astype(np.uint8))
+       
+      
         new_image_pil = Image.fromarray(new_image.numpy().astype(np.uint8))
         output_buffer = io.BytesIO()
         new_image_pil.save(output_buffer, format='PNG') 
@@ -161,17 +165,5 @@ class ColourSimulation(ColourSimulationInterface):
 
 
     
-
-# if __name__ == "__main__":
-#     image_path = "CarColourSimulation/test_data/car2_3.jpg"
-#     # Example usage
-#     colour_simulation = ColourSimulation(model_path='CarColourSimulation/models/best.pt')
-    
-#     # Load an image (for example, from a file or bytes)
-#     with open(image_path, "rb") as image_file:
-#         image_bytes = image_file.read()
-    
-#     # Simulate colour on the image
-#     simulated_image_bytes = colour_simulation.simulate_colour_on_body(image_bytes,np.array([108, 148, 252]))
 
 

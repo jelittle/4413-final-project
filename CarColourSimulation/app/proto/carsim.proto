@@ -1,0 +1,19 @@
+
+message ColourSimRequest{
+
+    required bytes image = 1;
+    repeated int32 rgb_colors = 2;
+
+}
+
+message ColourSimResponse{
+    required bytes iamge = 1;
+    
+
+}
+
+service CarSim {
+    rpc SimulateColour(ColourSimRequest) returns (ColourSimResponse);
+
+
+}

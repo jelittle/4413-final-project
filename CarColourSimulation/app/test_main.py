@@ -1,30 +1,37 @@
 from fastapi.testclient import TestClient
 
 from fastapi.testclient import TestClient
-from .app import app
-
+from main import app
+import matplotlib as plt
 import time
 
 client = TestClient(app)
 #add tests: for grpc requirement
 def test_returns_image():
-    """Test that the endpoint returns an image"""
-    test_image_path = "CarColourSimulation/app/test_data/car2_1.jpg"
-    
+    test_image_path = "./app/test_data/car2_3.jpg"
     with open(test_image_path, "rb") as f:
         response = client.post(
-            "/simulate_colour",
-            files={"file": ("car2_1.jpg", f, "image/jpeg")},
-            data={"colour": "[108, 148, 252]"}  # Red color as JSON string
+            "/simulate_colour?r=108&g=148&b=252",
+            files={"file": ("car2_1.jpg", f, "image/jpeg")}
         )
     
+    #if its an error print the error
+    if response.status_code != 200:
+        print(f"Error: {response.status_code} - {response.text}")
     assert response.status_code == 200
-    assert "image" in response.json()
+    assert response.headers["content-type"].startswith("image/")
+    assert len(response.content) > 0
+    # Save the returned image
+    with open("output_image.jpg", "wb") as f:
+        f.write(response.content)
+    print(f"Image saved as output_image.jpg")
+
+ 
 
 
-def test_image_is_different():
-    """Test that multiple calls return different images"""
-    pass
+# def test_image_is_different():
+#     """Test that multiple calls return different images"""
+#     pass
 
 
 

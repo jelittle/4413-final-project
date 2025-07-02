@@ -8,3 +8,10 @@ carparts training for model :https://colab.research.google.com/github/ultralytic
 
 
 https://apidog.com/blog/fastapi-grpc/
+
+
+https://universe.roboflow.com/person-detector/car-parts-segmentation
+
+https://universe.roboflow.com/projects-pmesg/car-hole
+
+https://universe.roboflow.com/vehiclerecolorsegment/vehicle-parts-segmentation-for-recoloring/model/1
