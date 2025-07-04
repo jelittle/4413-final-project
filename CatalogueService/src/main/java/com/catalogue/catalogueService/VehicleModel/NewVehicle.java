@@ -48,8 +48,8 @@ public class NewVehicle{
 
 class BasicNewView extends BasicView {
 
-    public BasicNewView(String make, String model, String bodyType, int modelYear, int price, boolean isHotDeal, int postTime) {
-        super(make, model, bodyType, modelYear, price, isHotDeal, postTime);
+    public BasicNewView(String make, String model, String bodyType, int modelYear, int price, boolean isHotDeal) {
+        super(make, model, bodyType, modelYear, price, isHotDeal);
     }
 }
 

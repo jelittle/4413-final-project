@@ -44,8 +44,8 @@ class BasicUsedView extends BasicView {
     private int mileage;
 
     public BasicUsedView(String make, String model, String bodyType, int modelYear,
-                         int price, boolean isHotDeal, int postTime, String vehicleHistory, int mileage) {
-        super(make, model, bodyType, modelYear, price, isHotDeal, postTime);
+                         int price, boolean isHotDeal, String vehicleHistory, int mileage) {
+        super(make, model, bodyType, modelYear, price, isHotDeal);
         this.vehicleHistory = vehicleHistory;
         this.mileage = mileage;
     }

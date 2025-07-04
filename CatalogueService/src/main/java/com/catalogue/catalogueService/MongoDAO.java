@@ -20,7 +20,7 @@ public class MongoDAO {
     @Autowired
     private MongoTemplate queryTemplate;
 
-    final static int QUERY_LIMIT = 3; // The MAX number of vehicles returned by a query, can be set to less by request
+    final static int QUERY_LIMIT = 10; // The MAX number of vehicles returned by a query, can be set to less by request
 
 
 
@@ -47,11 +47,13 @@ public class MongoDAO {
     }
 
     public List<Vehicle> orderedFilteredQuery(int sortInt, String collectionName,
-                                                     Sort.Direction sortDirection,
-                                                     String sortString) {
+                                              Sort.Direction sortDirection,
+                                              String sortString,
+                                              VehicleFilter filterOptions) {
 
         Query query = new Query();
         query.limit(QUERY_LIMIT);                                               // Limit to QUERY_LIMIT Vehicles
+        applyFilter(query, filterOptions);
         query.with(Sort.by(sortDirection, sortString));                         // Setting sorting
 
         if(sortInt == -1){
@@ -68,16 +70,31 @@ public class MongoDAO {
     }
 
 
-    public List<Vehicle> orderedFilteredQuery(String sortField, String collectionName, Sort.Direction sortDirection, String sortString) {
+    public List<Vehicle> orderedFilteredQuery(String sortField, String collectionName, Sort.Direction sortDirection, String sortString, VehicleFilter filterOptions) {
         Query query = new Query();
+        applyFilter(query, filterOptions);
+
+        query.limit(QUERY_LIMIT);                                               // Limit to QUERY_LIMIT Vehicles
+        query.with(Sort.by(sortDirection, sortString));                         // Setting sorting
+
+        if(sortField == null){
+            return queryTemplate.find(query, Vehicle.class, collectionName);
+        }
+
         switch (sortDirection){
             case ASC -> query.addCriteria(Criteria.where(sortString).gt(sortField));
             case DESC -> query.addCriteria(Criteria.where(sortString).lt(sortField));
             case null, default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Order must be ASC or DESC");
         }
-        query.limit(QUERY_LIMIT);                                               // Limit to QUERY_LIMIT Vehicles
-        query.with(Sort.by(sortDirection, sortString));                         // Setting sorting
+
         return queryTemplate.find(query, Vehicle.class, collectionName);
     }
 
+    private void applyFilter(Query query, VehicleFilter filterOptions) {
+        if(filterOptions == null){return;}
+        List<Criteria> filterList = filterOptions.getFilterList();
+        if(!filterList.isEmpty()){
+            query.addCriteria(new Criteria().andOperator(filterList.toArray(new Criteria[0])));
+        }
+    }
 }

@@ -39,10 +39,10 @@ public class ExtCommController {
     // Need to be filled and implemented in getOrderedList()
 
     public enum requestType      {NEW, USED}
-    public enum requestBrand     {TOYOTA}
-    public enum requestBodyType  {SEDAN, SUV}
+    public enum requestBrand     {Tesla, BYD, BMW, Mercedes, Volkswagen, Hyundai, KIA, Ford, Nissan, Rivian, Toyota}
+    public enum requestBodyType  {Sedan, SUV, Hatchback, Coupe}
     public enum requestHistory   {CLEAN, DAMAGED, TOTALED}
-    public enum requestSortParam {VEHICLE_ID, PRICE, MILEAGE}
+    public enum requestSortParam {ID, PRICE, MILEAGE}
 
     /**
      *
@@ -82,37 +82,33 @@ public class ExtCommController {
      * @param sortParam - The parameter that the sorting is performed over, can be one of [VEHICLE_ID/PRICE/MILEAGE]
      *                  DEFAULT is VEHICLE_ID, MILEAGE and vehicleType=NEW is an invalid combination.
      * @param sortDirection - The order of sorting, one of [ASC/DESC]
-     * @param sortField - The previous last value of the sortParam (ie. if sorting on price ascending,
-     *                  the max price of the prev page)
      * @param vehicleType - Query for new or used vehicle, value take on one of [NEW/USED]
      * @return - Ordered page of filtered sorted vehicles
      */
     @GetMapping("/vehicle/list/ordered/{param}/{mode}")
     public List<Vehicle> getOrderedList(@PathVariable("param") requestSortParam sortParam,
                                         @PathVariable("mode") Sort.Direction sortDirection,
-                                        @RequestParam(value = "sortField", defaultValue = "-1") String sortField,
-                                        @RequestParam(value = "type", defaultValue = "NEW") requestType vehicleType)  {
-
+                                        @RequestParam(value = "vehicleId", required = false) String vehicleId,
+                                        @RequestParam(value = "price", defaultValue = "-1") int price,
+                                        @RequestParam(value = "mileage", defaultValue = "-1") int mileage,
+                                        @RequestParam(value = "type", defaultValue = "NEW") requestType vehicleType,
+                                        @RequestBody(required = false) VehicleFilter filterOptions)  {
 
         if(sortParam == MILEAGE && vehicleType == NEW){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Mileage Not Valid Sort Param For New Vehicles");
         }
 
-        String collectionName = NEW_COLLECTION_NAME;                          // Default to new vehicle collection
-        if(vehicleType == USED){collectionName = USED_COLLECTION_NAME;}       // If used vehicle requested, search used
+        String collectionName = selectCollection(vehicleType);
 
-        String sortString;
-        if     (sortParam == PRICE)  { sortString = "basicView.price";}      // Sort by Price
-        else if(sortParam == MILEAGE){ sortString = "basicView.mileage";}    // Sort by Mileage
-        else                         { sortString = "basicView._id";}        // Default to id
-
-
-        if(sortParam == PRICE || sortParam == MILEAGE){
-            int sortInt = Integer.parseInt(sortField);
-            return mongoDAO.orderedFilteredQuery(sortInt, collectionName, sortDirection, sortString);
+        switch (sortParam){
+            case PRICE -> {
+                return mongoDAO.orderedFilteredQuery(price, collectionName, sortDirection, "basicView.price", filterOptions);
+            }
+            case MILEAGE -> {
+                return mongoDAO.orderedFilteredQuery(mileage, collectionName, sortDirection, "basicView.mileage", filterOptions);
+            }
         }
-
-        return mongoDAO.orderedFilteredQuery(sortField, collectionName, sortDirection, sortString);
+        return mongoDAO.orderedFilteredQuery(vehicleId, collectionName, sortDirection, "basicView._id", filterOptions); // DEFAULT to vehicleId
     }
 
 

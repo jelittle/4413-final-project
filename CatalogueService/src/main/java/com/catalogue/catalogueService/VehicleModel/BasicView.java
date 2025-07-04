@@ -10,20 +10,18 @@ public class BasicView {
     private String make;
     private String model;
     private String bodyType;
-    private int modelYear;
-    private int price;
-    private boolean isHotDeal;
-    private int postTime;           // Posting time, minutes since Jan 1,1970
+    private Integer modelYear;
+    private Integer price;
+    private Boolean isHotDeal;
 
 
-    public BasicView(String make, String model, String bodyType, int modelYear, int price, boolean isHotDeal, int postTime) {
+    public BasicView(String make, String model, String bodyType, int modelYear, int price, boolean isHotDeal) {
         this.make = make;
         this.model = model;
         this.bodyType = bodyType;
         this.modelYear = modelYear;
         this.price = price;
         this.isHotDeal = isHotDeal;
-        this.postTime = postTime;
     }
 
     // Getter Methods Required By Jackson
@@ -52,7 +50,4 @@ public class BasicView {
         return isHotDeal;
     }
 
-    public int getPostTime() {
-        return postTime;
-    }
 }
