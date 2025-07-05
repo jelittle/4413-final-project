@@ -48,7 +48,7 @@ public class NewVehicle{
 
 class BasicNewView extends BasicView {
 
-    public BasicNewView(String make, String model, String bodyType, int modelYear, int price, boolean isHotDeal) {
+    public BasicNewView(String make, String model, String bodyType, Integer modelYear, Integer price, Boolean isHotDeal) {
         super(make, model, bodyType, modelYear, price, isHotDeal);
     }
 }

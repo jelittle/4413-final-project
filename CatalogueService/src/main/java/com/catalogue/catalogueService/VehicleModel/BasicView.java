@@ -15,7 +15,7 @@ public class BasicView {
     private Boolean isHotDeal;
 
 
-    public BasicView(String make, String model, String bodyType, int modelYear, int price, boolean isHotDeal) {
+    public BasicView(String make, String model, String bodyType, Integer modelYear, Integer price, Boolean isHotDeal) {
         this.make = make;
         this.model = model;
         this.bodyType = bodyType;
@@ -38,15 +38,15 @@ public class BasicView {
         return bodyType;
     }
 
-    public int getModelYear() {
+    public Integer getModelYear() {
         return modelYear;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public boolean isHotDeal() {
+    public Boolean isHotDeal() {
         return isHotDeal;
     }
 

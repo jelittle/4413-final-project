@@ -24,6 +24,7 @@ public class VehicleFilter {
     @JsonAlias("history")
     private List<requestHistory> historyList;
 
+    @JsonAlias("hotDeal")
     private Boolean isHotDeal;
 
     public List<Criteria> getFilterList() {
@@ -42,7 +43,7 @@ public class VehicleFilter {
         }
 
         if (isHotDeal != null) {
-            output.add(Criteria.where("basicView.hotDeal").is(isHotDeal));
+            output.add(Criteria.where("basicView.isHotDeal").is(isHotDeal));
         }
 
         return output;
