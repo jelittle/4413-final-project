@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.repository.Query;
  * The interface used for internal communication with mongoDB
  */
 
-public interface DatabaseInterface extends MongoRepository<NewVehicle,String> {
+public interface DatabaseInterface extends MongoRepository<Vehicle,String> {
     
 }
 

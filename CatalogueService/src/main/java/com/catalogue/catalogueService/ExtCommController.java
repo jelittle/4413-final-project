@@ -4,6 +4,8 @@ import com.catalogue.catalogueService.VehicleModel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -11,9 +13,7 @@ import java.util.List;
 
 
 import static com.catalogue.catalogueService.ExtCommController.requestSortParam.MILEAGE;
-import static com.catalogue.catalogueService.ExtCommController.requestSortParam.PRICE;
 import static com.catalogue.catalogueService.ExtCommController.requestType.NEW;
-import static com.catalogue.catalogueService.ExtCommController.requestType.USED;
 
 
 /**
@@ -31,17 +31,15 @@ public class ExtCommController {
     MongoDAO mongoDAO;
 
 
-    final static String NEW_COLLECTION_NAME = "newVehicle";
-    final static String USED_COLLECTION_NAME = "usedVehicle";
+    final static String NEW_COLLECTION_NAME = "vehicle";
+    final static String USED_COLLECTION_NAME = "vehicle";
 
 
-    // ENUMS storing valid parameters for filtering/sorting
-    // Need to be filled and implemented in getOrderedList()
-
-    public enum requestType      {NEW, USED}
     public enum requestBrand     {Tesla, BYD, BMW, Mercedes, Volkswagen, Hyundai, KIA, Ford, Nissan, Rivian, Toyota}
     public enum requestBodyType  {Sedan, SUV, Hatchback, Coupe}
-    public enum requestHistory   {CLEAN, DAMAGED, TOTALED}
+    public enum requestHistory   {New, Clean, Damaged, Totaled}
+
+    public enum requestType      {NEW, USED, MIXED}
     public enum requestSortParam {ID, PRICE, MILEAGE}
 
     /**
@@ -57,24 +55,7 @@ public class ExtCommController {
     public List<Vehicle> getListOfVehicles(@RequestParam(value = "vehicleId", required = false) String vehicleId,
                                            @RequestParam(value = "type", defaultValue = "NEW") requestType vehicleType) {
 
-        String collectionName = selectCollection(vehicleType);
-        return mongoDAO.simpleQuery(vehicleId, collectionName);
-    }
-
-    /**
-     *
-     * Catalogue request for a list of detailed vehicles,
-     * used by detailed view and comparing different vehicles.
-     *
-     * @param vehicleIdList - List of vehicleId's being queried
-     * @return - List of detailed vehicle views
-     */
-    @GetMapping("/vehicle/list/detailed")
-    public List<Vehicle> getListOfVehiclesDetailed(@RequestBody List<String> vehicleIdList,
-                                                      @RequestParam(value = "type", defaultValue = "NEW") requestType vehicleType) {
-
-        String collectionName = selectCollection(vehicleType);
-        return mongoDAO.detailedQuery(vehicleIdList,collectionName);
+        return mongoDAO.simpleQuery(vehicleId, vehicleType);
     }
 
     /**
@@ -102,13 +83,13 @@ public class ExtCommController {
 
         switch (sortParam){
             case PRICE -> {
-                return mongoDAO.orderedFilteredQuery(price, collectionName, sortDirection, "basicView.price", filterOptions);
+                return mongoDAO.orderedFilteredQuery(price, vehicleType, sortDirection, "basicView.price", filterOptions);
             }
             case MILEAGE -> {
-                return mongoDAO.orderedFilteredQuery(mileage, collectionName, sortDirection, "basicView.mileage", filterOptions);
+                return mongoDAO.orderedFilteredQuery(mileage, vehicleType, sortDirection, "basicView.mileage", filterOptions);
             }
         }
-        return mongoDAO.orderedFilteredQuery(vehicleId, collectionName, sortDirection, "basicView._id", filterOptions); // DEFAULT to vehicleId
+        return mongoDAO.orderedFilteredQuery(vehicleId, vehicleType, sortDirection, "basicView._id", filterOptions); // DEFAULT to vehicleId
     }
 
 
@@ -122,31 +103,39 @@ public class ExtCommController {
     }
 
 
-    @PostMapping("/newVehicle")
-    public String postNewVehicle(@RequestBody NewVehicle vehicle){
+    @PostMapping("/vehicle")
+    public String postNewVehicle(@RequestBody Vehicle vehicle){
 
         vehicleRepo.save(vehicle);
 
         return "Success";
     }
 
-    @PostMapping("/newVehicle/format")
-    public String postNewVehicle(){
-        return
-            "{" +
-                "\"basicView\" : {"+
-                    "\"make\": \"FILL\","+
-                    "\"model\": \"FILL\","+
-                    "\"bodyType\": \"FILL\","+
-                    "\"modelYear\": INT,"+
-                    "\"price\": INT,"+
-                    "\"isHotDeal\": BOOL,"+
-                    "\"postTime\": INT"+
-                "},"+
-                "\"detailedView\" :{"+
-                    "\"someExtras\": \"FILL\""+
-                "}"+
-            "}";
+    @GetMapping("/vehicle/format")
+    @ResponseBody
+    public ResponseEntity<String> getVehicleFormat(){
+
+        String str = '{' +
+                "\"make\" : \"ENUM\"," +
+                "\"model\" : \"STRING\"," +
+                "\"bodyType\" : \"ENUM\"," +
+                "\"modelYear\" : \"INTEGER\"," +
+                "\"price\" : \"INTEGER\"," +
+                "\"rating\" : \"FLOAT\"," +
+                "\"quantity\" : \"INTEGER\"," +
+                "\"isHotDeal\" : \"BOOLEAN\"," +
+                "\"isNew\" : \"BOOLEAN\"," +
+                "\"description\" : \"STRING\"," +
+                "\"thumbnail\" : \"URL\"," +
+                "\"images\" : \"[URL]\"," +
+                "\"mileage\" : \"INTEGER\"," +
+                "\"history\" : \"ENUM\"," +
+                "\"customizations\" : \"JSON_OBJ\"" +
+                '}';
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(str);
     }
 
 }

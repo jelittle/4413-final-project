@@ -24,29 +24,21 @@ public class MongoDAO {
 
 
 
-    public List<Vehicle> simpleQuery(String vehicleId, String collectionName) {
+    public List<Vehicle> simpleQuery(String vehicleId, ExtCommController.requestType vehicleType) {
 
         Query query = new Query();                                            // Building query
         if(vehicleId != null) {                                               // Pagination
             query.addCriteria(Criteria.where("_id").gt(vehicleId));      // Start page after vehicleId if provided
         }
-        query.fields().exclude("detailedView");                          // Exclude detailedView (Will be null)
+        setVehicleType(query,vehicleType);
         query.limit(QUERY_LIMIT);                                             // Limit to QUERY_LIMIT Vehicles
 
-        return queryTemplate.find(query, Vehicle.class, collectionName);      // Run query and return output
+        return queryTemplate.find(query, Vehicle.class);      // Run query and return output
     }
 
 
-    public List<Vehicle> detailedQuery(List<String> vehicleIdList, String collectionName) {
-
-        Query query = new Query();                                            // Building query
-        query.addCriteria(Criteria.where("_id").in(vehicleIdList));      // Search by ID
-        query.limit(QUERY_LIMIT);                                             // Limit to QUERY_LIMIT Vehicles
-
-        return queryTemplate.find(query, Vehicle.class, collectionName);      // Run query and return output
-    }
-
-    public List<Vehicle> orderedFilteredQuery(int sortInt, String collectionName,
+    public List<Vehicle> orderedFilteredQuery(int sortInt,
+                                              ExtCommController.requestType vehicleType,
                                               Sort.Direction sortDirection,
                                               String sortString,
                                               VehicleFilter filterOptions) {
@@ -54,10 +46,11 @@ public class MongoDAO {
         Query query = new Query();
         query.limit(QUERY_LIMIT);                                               // Limit to QUERY_LIMIT Vehicles
         applyFilter(query, filterOptions);
+        setVehicleType(query,vehicleType);
         query.with(Sort.by(sortDirection, sortString));                         // Setting sorting
 
         if(sortInt == -1){
-            return queryTemplate.find(query, Vehicle.class, collectionName);
+            return queryTemplate.find(query, Vehicle.class);
         }
 
         switch (sortDirection) {
@@ -66,19 +59,23 @@ public class MongoDAO {
             case null, default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Order must be ASC or DESC");
         }
 
-        return queryTemplate.find(query, Vehicle.class, collectionName);
+        return queryTemplate.find(query, Vehicle.class);
     }
 
 
-    public List<Vehicle> orderedFilteredQuery(String sortField, String collectionName, Sort.Direction sortDirection, String sortString, VehicleFilter filterOptions) {
+    public List<Vehicle> orderedFilteredQuery(String sortField,
+                                              ExtCommController.requestType vehicleType,
+                                              Sort.Direction sortDirection,
+                                              String sortString,
+                                              VehicleFilter filterOptions) {
         Query query = new Query();
         applyFilter(query, filterOptions);
 
         query.limit(QUERY_LIMIT);                                               // Limit to QUERY_LIMIT Vehicles
         query.with(Sort.by(sortDirection, sortString));                         // Setting sorting
-
+        setVehicleType(query,vehicleType);
         if(sortField == null){
-            return queryTemplate.find(query, Vehicle.class, collectionName);
+            return queryTemplate.find(query, Vehicle.class);
         }
 
         switch (sortDirection){
@@ -87,7 +84,7 @@ public class MongoDAO {
             case null, default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Order must be ASC or DESC");
         }
 
-        return queryTemplate.find(query, Vehicle.class, collectionName);
+        return queryTemplate.find(query, Vehicle.class);
     }
 
     private void applyFilter(Query query, VehicleFilter filterOptions) {
@@ -95,6 +92,13 @@ public class MongoDAO {
         List<Criteria> filterList = filterOptions.getFilterList();
         if(!filterList.isEmpty()){
             query.addCriteria(new Criteria().andOperator(filterList.toArray(new Criteria[0])));
+        }
+    }
+
+    private void setVehicleType(Query query, ExtCommController.requestType vehicleType) {
+        switch (vehicleType){
+            case USED -> query.addCriteria(Criteria.where("isNew").is(false));
+            case NEW -> query.addCriteria(Criteria.where("isNew").is(true));
         }
     }
 }

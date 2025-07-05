@@ -31,19 +31,19 @@ public class VehicleFilter {
         List<Criteria> output = new ArrayList<>();
 
         if(makeList != null && !makeList.isEmpty()){
-            output.add(Criteria.where("basicView.make").in(makeList));
+            output.add(Criteria.where("make").in(makeList));
         }
 
         if(bodyTypeList != null && !bodyTypeList.isEmpty()){
-            output.add(Criteria.where("basicView.bodyType").in(bodyTypeList));
+            output.add(Criteria.where("bodyType").in(bodyTypeList));
         }
 
         if(historyList != null && !historyList.isEmpty()){
-            output.add(Criteria.where("basicView.vehicleHistory").in(historyList));
+            output.add(Criteria.where("history").in(historyList));
         }
 
         if (isHotDeal != null) {
-            output.add(Criteria.where("basicView.isHotDeal").is(isHotDeal));
+            output.add(Criteria.where("isHotDeal").is(isHotDeal));
         }
 
         return output;
