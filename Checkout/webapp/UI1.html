@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Checkout</title>
+</head>
+<body>
+	<header> 
+		<h1>Checkout</h1>
+	</header>
+	
+	<main>
+		<form action="CheckoutServlet" method="post" id="cartForm">
+			<fieldset>
+				<legend>Enter Items</legend>
+				User's name: <input type="text" id="userName" name="userName">
+				<br>
+				ID of checkout: <input type="text" id="checkoutID" name="checkoutID">
+				<br>
+				ItemID: <input type="text" id="itemID" name="itemID">
+				<br>
+				Name of Items: <input type="text" id="name" name="name">
+				<br>
+				Number of Items: <input type="text" id="quantity" name="quantity">
+				<br>
+				Price per Item: <input type="text" id="price" name="price">
+				<br>
+				<input type="submit" value="Checkout">
+			</fieldset>
+		</form>
+	</main>
+</body>
+</html>
