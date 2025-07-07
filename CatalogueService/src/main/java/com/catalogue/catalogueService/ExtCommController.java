@@ -83,13 +83,13 @@ public class ExtCommController {
 
         switch (sortParam){
             case PRICE -> {
-                return mongoDAO.orderedFilteredQuery(price, vehicleType, sortDirection, "basicView.price", filterOptions);
+                return mongoDAO.orderedFilteredQuery(price, vehicleType, sortDirection, "price", filterOptions);
             }
             case MILEAGE -> {
-                return mongoDAO.orderedFilteredQuery(mileage, vehicleType, sortDirection, "basicView.mileage", filterOptions);
+                return mongoDAO.orderedFilteredQuery(mileage, vehicleType, sortDirection, "mileage", filterOptions);
             }
         }
-        return mongoDAO.orderedFilteredQuery(vehicleId, vehicleType, sortDirection, "basicView._id", filterOptions); // DEFAULT to vehicleId
+        return mongoDAO.orderedFilteredQuery(vehicleId, vehicleType, sortDirection, "_id", filterOptions); // DEFAULT to vehicleId
     }
 
 
