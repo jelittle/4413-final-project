@@ -5,7 +5,7 @@ FROM tomcat:10.1-jdk21
 RUN rm -rf /usr/local/tomcat/webapps/*
 
 # Copy WAR file
-COPY UserService.war /usr/local/tomcat/webapps/ROOT.war
+COPY ./target/UserService-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
 
 # Expose default Tomcat port
 EXPOSE 8080

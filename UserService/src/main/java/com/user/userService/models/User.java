@@ -1,15 +1,17 @@
 package com.user.userService.models;
 
-//import jakarta.persistence.Entity;
-//import jakarta.persistence.GeneratedValue;
-//import jakarta.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
-//@Entity
+@Entity
 public class User {
 
-//    @Id
-//    @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long userId;
+    @Column(unique = true, length = 100, nullable = false)
     private String email;
     private String hashedPass;
     private String salt;
