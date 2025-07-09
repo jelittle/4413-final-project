@@ -27,6 +27,10 @@ public class VehicleFilter {
     @JsonAlias("hotDeal")
     private Boolean isHotDeal;
 
+    private Integer yearMin = 2000;     // Setting reasonable default range
+    private Integer yearMax = 2050;
+
+
     public List<Criteria> getFilterList() {
         List<Criteria> output = new ArrayList<>();
 
@@ -46,8 +50,12 @@ public class VehicleFilter {
             output.add(Criteria.where("isHotDeal").is(isHotDeal));
         }
 
+        output.add(Criteria.where("modelYear").gte(yearMin));
+        output.add(Criteria.where("modelYear").lte(yearMax));
+
         return output;
     }
+
 
     public List<requestBrand> getMakeList() {
         return makeList;
@@ -79,5 +87,21 @@ public class VehicleFilter {
 
     public void setHotDeal(Boolean hotDeal) {
         isHotDeal = hotDeal;
+    }
+
+    public Integer getYearMin() {
+        return yearMin;
+    }
+
+    public void setYearMin(Integer yearMin) {
+        this.yearMin = yearMin;
+    }
+
+    public Integer getYearMax() {
+        return yearMax;
+    }
+
+    public void setYearMax(Integer yearMax) {
+        this.yearMax = yearMax;
     }
 }

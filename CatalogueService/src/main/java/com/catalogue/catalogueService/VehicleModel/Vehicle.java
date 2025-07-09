@@ -22,6 +22,7 @@ public class Vehicle {
     private Integer modelYear;
     private Integer price;
     private Double rating;
+    private Integer numRatings;
     private Integer quantity;
     private Boolean isHotDeal;
     private Boolean isNew;
@@ -33,7 +34,7 @@ public class Vehicle {
     private Map<String, Object> customizations;
 
     public Vehicle(ExtCommController.requestBrand make, String model, ExtCommController.requestBodyType bodyType,
-                   Integer modelYear, Integer price, Double rating, Integer quantity, Boolean isHotDeal,
+                   Integer modelYear, Integer price, Double rating, Integer numRatings, Integer quantity, Boolean isHotDeal,
                    Boolean isNew, String description, String thumbnail, List<String> images, Integer mileage,
                    ExtCommController.requestHistory history, Map<String, Object> customizations) {
         this.make = make;
@@ -42,6 +43,7 @@ public class Vehicle {
         this.modelYear = modelYear;
         this.price = price;
         this.rating = rating;
+        this.numRatings = numRatings;
         this.quantity = quantity;
         this.isHotDeal = isHotDeal;
         this.isNew = isNew;
@@ -180,4 +182,13 @@ public class Vehicle {
     public void setHistory(ExtCommController.requestHistory history) {
         this.history = history;
     }
+
+    public Integer getNumRatings() {
+        return numRatings;
+    }
+
+    public void setNumRatings(Integer numRatings) {
+        this.numRatings = numRatings;
+    }
+
 }
