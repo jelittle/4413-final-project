@@ -72,40 +72,69 @@ This file has the catalogue page.
                         </select>
                     </div>
 
-                    <!-- Brands Dropdown -->
+                    <!-- Brands Checkboxes -->
                     <div class="filter-div" id="brand-filter">
                         <h3>Brands</h3>
-                        <!-- Will need to handle brands dynamically, with the brands available? -->
-                        <select id="filter-brand">
-                            <option value="">All Brands</option>
-                            <option value="Tesla">Tesla</option>
-                            <option value="Toyota">Toyota</option>
-                            <option value="Rivian">Rivian</option>
-                        </select>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="brand-tesla" name="brand" value="Tesla">
+                                <label for="brand-tesla">Tesla</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="brand-toyota" name="brand" value="Toyota">
+                                <label for="brand-toyota">Toyota</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="brand-rivian" name="brand" value="Rivian">
+                                <label for="brand-rivian">Rivian</label>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Body Type Dropdown -->
+                    <!-- Body Type Checkboxes -->
                     <div class="filter-div" id="body-type-filter">
                         <h3>Body Type</h3>
-                        <select id="filter-body-type">
-                            <option value="">All Body Types</option>
-                            <option value="Sedan">Sedan</option>
-                            <option value="SUV">SUV</option>
-                            <option value="Hatchback">Hatchback</option>
-                            <option value="Truck">Truck</option>
-                        </select>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="body-sedan" name="body-type" value="Sedan">
+                                <label for="body-sedan">Sedan</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="body-suv" name="body-type" value="SUV">
+                                <label for="body-suv">SUV</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="body-hatchback" name="body-type" value="Hatchback">
+                                <label for="body-hatchback">Hatchback</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="body-truck" name="body-type" value="Truck">
+                                <label for="body-truck">Truck</label>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Model Year Dropdown -->
+                    <!-- Model Year Checkboxes -->
                     <div class="filter-div" id="model-year-filter">
                         <h3>Model Year</h3>
-                        <select id="filter-model-year">
-                            <option value="">All Years</option>
-                            <option value="2025">2025</option>
-                            <option value="2024">2024</option>
-                            <option value="2023">2023</option>
-                            <option value="2022">2022</option>
-                        </select>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="year-2025" name="model-year" value="2025">
+                                <label for="year-2025">2025</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="year-2024" name="model-year" value="2024">
+                                <label for="year-2024">2024</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="year-2023" name="model-year" value="2023">
+                                <label for="year-2023">2023</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="year-2022" name="model-year" value="2022">
+                                <label for="year-2022">2022</label>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- History Dropdown -->
