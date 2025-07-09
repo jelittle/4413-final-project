@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         yearMaxDisplay.textContent = yearMaxSlider.value;
     }
 
-    // Ensure min slider doesn't exceed max slider
+    // Ensure min slider doesn't exceed max slider. If so, move both sliders to the same value.
     yearMinSlider.addEventListener('input', function() {
         if (parseInt(yearMinSlider.value) > parseInt(yearMaxSlider.value)) {
             yearMaxSlider.value = yearMinSlider.value;
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateYearDisplay();
     });
 
-    // Ensure max slider doesn't go below min slider
+    // Ensure max slider doesn't go below min slider. If so, move both sliders to the same value.
     yearMaxSlider.addEventListener('input', function() {
         if (parseInt(yearMaxSlider.value) < parseInt(yearMinSlider.value)) {
             yearMinSlider.value = yearMaxSlider.value;
