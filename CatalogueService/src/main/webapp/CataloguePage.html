@@ -7,7 +7,7 @@ This file has the catalogue page.
 <head> 
     <title>Catalogue Page</title> 
 	<link rel="stylesheet" type="text/css" href=""> <!-- Link to external CSS file -->
-	<script src=""></script> <!-- Link to external JavaScript file --> 
+	<script src="CataloguePage.js"></script> <!-- Link to external JavaScript file --> 
 </head>
 
 <body>
@@ -42,34 +42,6 @@ This file has the catalogue page.
                     <div class="filter-div" id="hot-deals-filter">
                         <input type="checkbox" id="hotDeals" name="hotDeals">
                         <label for="hotDeals">View Hot Deals</label>
-                    </div>
-
-                    <!-- New / Used Filter -->
-                    <div class="filter-div" id="condition-filter">
-                        <h3>Condition</h3>
-                        <p>New</p>
-                        <hr>
-                        <p>Used</p>
-                    </div>
-
-                    <!-- Price Dropdown -->
-                    <div class="filter-div" id="price-filter">
-                        <h3>Price</h3>
-                        <select id="sort-price">
-                            <option value="">Sort by Price</option>
-                            <option value="price-asc">Ascending</option>
-                            <option value="price-desc">Descending</option>
-                        </select>
-                    </div>
-
-                    <!-- Mileage Dropdown -->
-                    <div class="filter-div" id="mileage-filter">
-                        <h3>Mileage</h3>
-                        <select id="sort-mileage">
-                            <option value="">Sort by Mileage</option>
-                            <option value="mileage-asc">Low to High</option>
-                            <option value="mileage-desc">High to Low</option>
-                        </select>
                     </div>
 
                     <!-- Brands Checkboxes -->
@@ -114,122 +86,229 @@ This file has the catalogue page.
                         </div>
                     </div>
 
-                    <!-- Model Year Checkboxes -->
+                    <!-- Model Year Range Slider -->
                     <div class="filter-div" id="model-year-filter">
-                        <h3>Model Year</h3>
-                        <div class="checkbox-group">
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="year-2025" name="model-year" value="2025">
-                                <label for="year-2025">2025</label>
+                        <h3>Model Year Range</h3>
+                        <div class="range-slider-container">
+                            <div class="range-values">
+                                <span id="year-min-display">2022</span>
+                                <span>to</span>
+                                <span id="year-max-display">2025</span>
                             </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="year-2024" name="model-year" value="2024">
-                                <label for="year-2024">2024</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="year-2023" name="model-year" value="2023">
-                                <label for="year-2023">2023</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="year-2022" name="model-year" value="2022">
-                                <label for="year-2022">2022</label>
+                            <div class="range-slider">
+                                <input type="range" id="year-min" name="year-min" min="2022" max="2025" value="2022" class="range-slider-min">
+                                <input type="range" id="year-max" name="year-max" min="2022" max="2025" value="2025" class="range-slider-max">
                             </div>
                         </div>
                     </div>
 
-                    <!-- History Dropdown -->
+                    <!-- History Checkboxes -->
                     <div class="filter-div" id="vehicle-history-filter">
                         <h3>History</h3>
-                        <select id="filter-history">
-                            <option value="">All History</option>
-                            <option value="no-accidents">Without Reported Accidents/Damages</option>
-                            <option value="with-accidents">With Reported Accidents/Damages</option>
-                        </select>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="history-no-accidents" name="history" value="no-accidents">
+                                <label for="history-no-accidents">Without Reported Accidents/Damages (Clean)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="history-with-accidents" name="history" value="with-accidents">
+                                <label for="history-with-accidents">With Reported Accidents/Damages (Damaged)</label>
+                            </div>
+                        </div>
                     </div>
                 </td>
     
-    <!-- Right Side: Catalogue Display -->
+    <!-- Right Side: Catalogue Display with sorting ribbon below the title. -->
                 <td>
                     <h2>Our Electric Vehicles</h2>
-                    <!-- Table for vehicle grid (3 boxes per row). All boxes will need dynamic information. -->
+                    
+                    <!-- Sorting Ribbon - Can only apply one sort at a time. Either price or mileage. -->
+                    <div class="sorting-ribbon">
+                        <div class="sorting-item">
+                            <label for="sort-by">Sort by:</label>
+                            <select id="sort-by">
+                                <option value="default" selected>No Sort</option>
+                                <option value="price-sorting">Price</option>
+                                <option value="mileage-sorting">Mileage</option>
+                            </select>
+                        </div>
+                        <div class="sorting-item">
+                            <label for="sort-order">Order:</label>
+                            <select id="sort-order">
+                                <option value="default" selected>Select Order</option>
+                                <option value="ascending">Low to High</option>
+                                <option value="descending">High to Low</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Table for vehicle grid (5 boxes per row). All boxes will need dynamic information. -->
                     <table>
                         <!-- Row 1 -->
                         <tr>
                             <!-- Vehicle Box -->
                             <td>
-                                <img src=""> <!-- Vehicle image. Maybe use width, height 200x150. -->
+                                <div class="vehicle-image-frame">
+                                    <img src="" width="280" height="200">
+                                </div>
                                 <h3>Model Name</h3> <!-- Model name -->
                                 <p>Year</p> <!-- Model year -->
+                                <p>History: Clean/Damaged</p> <!-- Vehicle history status -->
+                                <p>Body Type: Sedan/SUV/Truck/etc.</p> <!-- Vehicle body type placeholder -->
                                 <p>Mileage: x mi</p> <!-- Mileage (if applicable). Just put 0 mi for new cars-->
-                                <p><button>Compare</button></p> <!-- Compare button. Leads to compare with first vehicle being this one. -->
                                 <p>Price: $</p> <!-- Price -->
                                 <p>Rating: &#9733;&#9733;&#9733;&#9733;&#9734; (4/5)</p> <!-- Rating with stars/5 -->
+                                <p><button>Compare</button></p> <!-- Compare button. Leads to compare with first vehicle being this one. -->
                                 <button onclick="location.href=''">View Details/Buy</button> <!-- View details button that leads to full details of vehicle -->
                             </td>
 
                             <!-- Vehicle Box -->
                             <td>
-                                <img src=""> <!-- Vehicle image. Maybe use width, height 200x150. -->
+                                <div class="vehicle-image-frame">
+                                    <img src="" width="280" height="200">
+                                </div>
                                 <h3>Model Name</h3> <!-- Model name -->
                                 <p>Year</p> <!-- Model year -->
+                                <p>History: Clean/Damaged</p> <!-- Vehicle history status -->
+                                <p>Body Type: Sedan/SUV/Truck/etc.</p> <!-- Vehicle body type placeholder -->
                                 <p>Mileage: x mi</p> <!-- Mileage (if applicable). Just put 0 mi for new cars-->
-                                <p><button>Compare</button></p> <!-- Compare button. Leads to compare with first vehicle being this one. -->
                                 <p>Price: $</p> <!-- Price -->
                                 <p>Rating: &#9733;&#9733;&#9733;&#9733;&#9734; (4/5)</p> <!-- Rating with stars/5 -->
+                                <p><button>Compare</button></p> <!-- Compare button. Leads to compare with first vehicle being this one. -->
+                                <button onclick="location.href=''">View Details/Buy</button> <!-- View details button that leads to full details of vehicle -->
+                            </td>
+                            <!-- Vehicle Box -->
+                            <td>
+                                <div class="vehicle-image-frame">
+                                    <img src="" width="280" height="200">
+                                </div>
+                                <h3>Model Name</h3> <!-- Model name -->
+                                <p>Year</p> <!-- Model year -->
+                                <p>History: Clean/Damaged</p> <!-- Vehicle history status -->
+                                <p>Body Type: Sedan/SUV/Truck/etc.</p> <!-- Vehicle body type placeholder -->
+                                <p>Mileage: x mi</p> <!-- Mileage (if applicable). Just put 0 mi for new cars-->
+                                <p>Price: $</p> <!-- Price -->
+                                <p>Rating: &#9733;&#9733;&#9733;&#9733;&#9734; (4/5)</p> <!-- Rating with stars/5 -->
+                                <p><button>Compare</button></p> <!-- Compare button. Leads to compare with first vehicle being this one. -->
                                 <button onclick="location.href=''">View Details/Buy</button> <!-- View details button that leads to full details of vehicle -->
                             </td>
 
                             <!-- Vehicle Box -->
                             <td>
-                                <img src=""> <!-- Vehicle image. Maybe use width, height 200x150. -->
+                                <div class="vehicle-image-frame">
+                                    <img src="" width="280" height="200">
+                                </div>
                                 <h3>Model Name</h3> <!-- Model name -->
                                 <p>Year</p> <!-- Model year -->
+                                <p>History: Clean/Damaged</p> <!-- Vehicle history status -->
+                                <p>Body Type: Sedan/SUV/Truck/etc.</p> <!-- Vehicle body type placeholder -->
                                 <p>Mileage: x mi</p> <!-- Mileage (if applicable). Just put 0 mi for new cars-->
-                                <p><button>Compare</button></p> <!-- Compare button. Leads to compare with first vehicle being this one. -->
                                 <p>Price: $</p> <!-- Price -->
                                 <p>Rating: &#9733;&#9733;&#9733;&#9733;&#9734; (4/5)</p> <!-- Rating with stars/5 -->
+                                <p><button>Compare</button></p> <!-- Compare button. Leads to compare with first vehicle being this one. -->
                                 <button onclick="location.href=''">View Details/Buy</button> <!-- View details button that leads to full details of vehicle -->
                             </td>
+
+                            <!-- Vehicle Box -->
+                            <td>
+                                <div class="vehicle-image-frame">
+                                    <img src="" width="280" height="200">
+                                </div>
+                                <h3>Model Name</h3> <!-- Model name -->
+                                <p>Year</p> <!-- Model year -->
+                                <p>History: Clean/Damaged</p> <!-- Vehicle history status -->
+                                <p>Body Type: Sedan/SUV/Truck/etc.</p> <!-- Vehicle body type placeholder -->
+                                <p>Mileage: x mi</p> <!-- Mileage (if applicable). Just put 0 mi for new cars-->
+                                <p>Price: $</p> <!-- Price -->
+                                <p>Rating: &#9733;&#9733;&#9733;&#9733;&#9734; (4/5)</p> <!-- Rating with stars/5 -->
+                                <p><button>Compare</button></p> <!-- Compare button. Leads to compare with first vehicle being this one. -->
+                                <button onclick="location.href=''">View Details/Buy</button> <!-- View details button that leads to full details of vehicle -->
+                            </td>
+                          
                         </tr>
 
                         <!-- Row 2 -->
                         <tr>
                             <!-- Vehicle Box -->
                             <td>
-                                <img src=""> <!-- Vehicle image. Maybe use width, height 200x150. -->
+                                <div class="vehicle-image-frame">
+                                    <img src="" width="280" height="200">
+                                </div>
                                 <h3>Model Name</h3> <!-- Model name -->
                                 <p>Year</p> <!-- Model year -->
+                                <p>History: Clean/Damaged</p> <!-- Vehicle history status -->
+                                <p>Body Type: Sedan/SUV/Truck/etc.</p> <!-- Vehicle body type placeholder -->
                                 <p>Mileage: x mi</p> <!-- Mileage (if applicable). Just put 0 mi for new cars-->
-                                <p><button>Compare</button></p> <!-- Compare button. Leads to compare with first vehicle being this one. -->
                                 <p>Price: $</p> <!-- Price -->
                                 <p>Rating: &#9733;&#9733;&#9733;&#9733;&#9734; (4/5)</p> <!-- Rating with stars/5 -->
+                                <p><button>Compare</button></p> <!-- Compare button. Leads to compare with first vehicle being this one. -->
                                 <button onclick="location.href=''">View Details/Buy</button> <!-- View details button that leads to full details of vehicle -->
                             </td>
 
                             <!-- Vehicle Box -->
                             <td>
-                                <img src=""> <!-- Vehicle image. Maybe use width, height 200x150. -->
+                                <div class="vehicle-image-frame">
+                                    <img src="" width="280" height="200">
+                                </div>
                                 <h3>Model Name</h3> <!-- Model name -->
                                 <p>Year</p> <!-- Model year -->
+                                <p>History: Clean/Damaged</p> <!-- Vehicle history status -->
+                                <p>Body Type: Sedan/SUV/Truck/etc.</p> <!-- Vehicle body type placeholder -->
                                 <p>Mileage: x mi</p> <!-- Mileage (if applicable). Just put 0 mi for new cars-->
-                                <p><button>Compare</button></p> <!-- Compare button. Leads to compare with first vehicle being this one. -->
                                 <p>Price: $</p> <!-- Price -->
                                 <p>Rating: &#9733;&#9733;&#9733;&#9733;&#9734; (4/5)</p> <!-- Rating with stars/5 -->
+                                <p><button>Compare</button></p> <!-- Compare button. Leads to compare with first vehicle being this one. -->
                                 <button onclick="location.href=''">View Details/Buy</button> <!-- View details button that leads to full details of vehicle -->
                             </td>
+
                             <!-- Vehicle Box -->
                             <td>
-                                <img src=""> <!-- Vehicle image. Maybe use width, height 200x150. -->
+                                <div class="vehicle-image-frame">
+                                    <img src="" width="280" height="200">
+                                </div>
                                 <h3>Model Name</h3> <!-- Model name -->
                                 <p>Year</p> <!-- Model year -->
+                                <p>History: Clean/Damaged</p> <!-- Vehicle history status -->
+                                <p>Body Type: Sedan/SUV/Truck/etc.</p> <!-- Vehicle body type placeholder -->
                                 <p>Mileage: x mi</p> <!-- Mileage (if applicable). Just put 0 mi for new cars-->
-                                <p><button>Compare</button></p> <!-- Compare button. Leads to compare with first vehicle being this one. -->
                                 <p>Price: $</p> <!-- Price -->
                                 <p>Rating: &#9733;&#9733;&#9733;&#9733;&#9734; (4/5)</p> <!-- Rating with stars/5 -->
+                                <p><button>Compare</button></p> <!-- Compare button. Leads to compare with first vehicle being this one. -->
+                                <button onclick="location.href=''">View Details/Buy</button> <!-- View details button that leads to full details of vehicle -->
+                            </td>
+
+                            <!-- Vehicle Box -->
+                            <td>
+                                <div class="vehicle-image-frame">
+                                    <img src="" width="280" height="200">
+                                </div>
+                                <h3>Model Name</h3> <!-- Model name -->
+                                <p>Year</p> <!-- Model year -->
+                                <p>History: Clean/Damaged</p> <!-- Vehicle history status -->
+                                <p>Body Type: Sedan/SUV/Truck/etc.</p> <!-- Vehicle body type placeholder -->
+                                <p>Mileage: x mi</p> <!-- Mileage (if applicable). Just put 0 mi for new cars-->
+                                <p>Price: $</p> <!-- Price -->
+                                <p>Rating: &#9733;&#9733;&#9733;&#9733;&#9734; (4/5)</p> <!-- Rating with stars/5 -->
+                                <p><button>Compare</button></p> <!-- Compare button. Leads to compare with first vehicle being this one. -->
+                                <button onclick="location.href=''">View Details/Buy</button> <!-- View details button that leads to full details of vehicle -->
+                            </td>
+
+                            <!-- Vehicle Box -->
+                            <td>
+                                <div class="vehicle-image-frame">
+                                    <img src="" width="280" height="200">
+                                </div>
+                                <h3>Model Name</h3> <!-- Model name -->
+                                <p>Year</p> <!-- Model year -->
+                                <p>History: Clean/Damaged</p> <!-- Vehicle history status -->
+                                <p>Body Type: Sedan/SUV/Truck/etc.</p> <!-- Vehicle body type placeholder -->
+                                <p>Mileage: x mi</p> <!-- Mileage (if applicable). Just put 0 mi for new cars-->
+                                <p>Price: $</p> <!-- Price -->
+                                <p>Rating: &#9733;&#9733;&#9733;&#9733;&#9734; (4/5)</p> <!-- Rating with stars/5 -->
+                                <p><button>Compare</button></p> <!-- Compare button. Leads to compare with first vehicle being this one. -->
                                 <button onclick="location.href=''">View Details/Buy</button> <!-- View details button that leads to full details of vehicle -->
                             </td>
                         </tr>
-                        <!-- Add more rows and vehicle boxes as needed -->
+                        <!-- Add more rows and vehicle boxes as needed, probably dynamically. -->
                     </table>
                 </td>
             </tr>
