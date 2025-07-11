@@ -1,37 +1,27 @@
 package com.user.userService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+
+import org.springframework.web.bind.annotation.*;
+
+import com.user.userService.dto.ReviewDTO;
+import com.user.userService.models.ECommerceUser;
+
 
 
 @RestController
 public interface IInternalComInterface{
 
-    /**
-     * get a user.
-     * 
-     * requires token given to other internal services
-     *
-     * @return a response string
-     */
 
-    @GetMapping("/internal/user/{id}")
-    String getUser(int id);
+    ECommerceUser getUserByUsername(@RequestParam String username);
 
-    /*
-     * get all reviews for a vehicle
-     * @params id - the id of the vehicle
-     * 
-     */
-    @GetMapping("/internal/user/{id}/reviews")
-    String getvehicleReviews(int id);
+    List<ReviewDTO> getReviewsByVehicleId(@RequestParam String vehicleId);
 
     
 
-    // Additional methods for creating, updating, and deleting users can be added here.
+
+
 }
+
+    

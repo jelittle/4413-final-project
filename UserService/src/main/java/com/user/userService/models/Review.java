@@ -1,38 +1,52 @@
 package com.user.userService.models;
 
-//import jakarta.persistence.Entity;
-//import jakarta.persistence.GeneratedValue;
-//import jakarta.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
-//@Entity
+@Entity
+@Table(name = "reviews", indexes = @Index(name = "idx_vehicle_id", columnList = "vehicle_id"))
 public class Review {
-//    @Id
-    private Long userId;        // PK
-//    @Id
-    private String vehicleId;   // PK
+    @Id
+    @GeneratedValue
+    private long id;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private ECommerceUser user; 
+    @Column(name = "vehicle_id", nullable = false)
+    private String vehicleId;  
+
     private String reviewTitle;
     private String reviewBody;
-    private Integer starRating;
+    private float starRating;
 
     public Review() {
 
     }
 
-    public Review(Long userId, String vehicleId, String reviewTitle, String reviewBody, Integer starRating) {
-        this.userId = userId;
+    public Review(ECommerceUser user, String vehicleId, String reviewTitle, String reviewBody, Integer starRating) {
+        this.user = user;
         this.vehicleId = vehicleId;
         this.reviewTitle = reviewTitle;
         this.reviewBody = reviewBody;
         this.starRating = starRating;
     }
 
-
-    public Long getUserId() {
-        return userId;
+    public ECommerceUser getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(ECommerceUser user) {
+        this.user = user;
+    }
+    public String getUsername() {
+        return user.getUsername();
     }
 
     public String getVehicleId() {
@@ -59,11 +73,11 @@ public class Review {
         this.reviewBody = reviewBody;
     }
 
-    public Integer getStarRating() {
+    public float getStarRating() {
         return starRating;
     }
 
-    public void setStarRating(Integer starRating) {
+    public void setStarRating(float starRating) {
         this.starRating = starRating;
     }
 }
