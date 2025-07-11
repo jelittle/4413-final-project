@@ -1,14 +1,12 @@
 package com.user.userService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.user.userService.models.ECommerceUser;
-import com.user.userService.models.Review;
+
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
-import org.springframework.security.core.GrantedAuthority;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -155,6 +153,22 @@ class UserServiceApplicationTests {
                 assertThat(false).isTrue(); // Fail the test if exception occurs
             }
 
+    }
+
+    @Test
+    void SuccessfullAuthReturn(){
+
+        ResponseEntity<String> response = getAuthorizedResponse("/auth/", HttpMethod.GET, String.class, "user", "password");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+    }
+
+    @Test
+    void UnsuccessfullAuthReturn(){
+
+        ResponseEntity<String> response = getAuthorizedResponse("/", HttpMethod.GET, String.class, "fail", "nopassword");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).contains("<!DOCTYPE html>");
 
     }
 }

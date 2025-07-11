@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.user.userService.dto.ReviewDTO;
 import com.user.userService.models.ECommerceUser;
-import com.user.userService.models.Review;
 import com.user.userService.repositories.ECommerceUserRepository;
 import com.user.userService.services.ReviewService;
 
