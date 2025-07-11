@@ -1,0 +1,5 @@
+https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/index.html
+
+https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-subrequest-authentication/
+https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-subrequest-authentication/
+https://nginx.org/en/docs/ngx_core_module.html#include

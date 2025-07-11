@@ -5,11 +5,11 @@ services:
     build: ./nginx
     # image: nginx-proxy
     ports:
-      - 8080:80
+      - 80:80
     depends_on:
       - catalogue
       - payment
-      - users
+      - user
 
   catalogue:
     build: ./CatalogueService
@@ -26,7 +26,7 @@ services:
     image: payment-service
     container_name: payment-service
 
-  users:
+  user:
     build: ./UserService
     image: user-service
     container_name: user-service
@@ -37,16 +37,6 @@ services:
       - 27017:27017
     volumes:
       - catalogue_volume:/data/db
-
-  mssql-container:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    environment:
-      ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "StrongPassword123"
-    ports:
-      - 1433:1433
-    volumes:
-      - sqlserverdata:/var/opt/mssql
 
 volumes:
   catalogue_volume:
