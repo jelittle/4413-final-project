@@ -29,6 +29,16 @@ class UserServiceApplicationTests {
         return restTemplate.exchange(url, method, request, responseType);
     }
 
+    private <T> ResponseEntity<T> getResponse(String url, HttpMethod method, Class<T> responseType) {
+        HttpHeaders headers = new HttpHeaders();
+      
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+             
+        return restTemplate.exchange(url, method, request, responseType);
+    }
+
+
+
     @Test
     void contextLoads() {
         System.out.println("Context loads successfully");
@@ -36,7 +46,7 @@ class UserServiceApplicationTests {
 
     @Test
     void testReturnCurrentUser() {
-        ResponseEntity<String> response = getAuthorizedResponse("/me", HttpMethod.GET, String.class, "user", "password");
+        ResponseEntity<String> response = getAuthorizedResponse("/user/me", HttpMethod.GET, String.class, "user", "password");
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -111,7 +121,7 @@ class UserServiceApplicationTests {
         for (int i = 1; i <= 3; i++) {
             String requestBody = String.format("vehicleId=123&reviewTitle=Review%d&reviewBody=This is review %d for vehicle 123&starRating=4.%d", i, i, i);
             HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
-            ResponseEntity<Void> response = restTemplate.postForEntity("/addReview", request, Void.class);
+            ResponseEntity<Void> response = restTemplate.postForEntity("/user/addReview", request, Void.class);
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
         }
 
@@ -119,7 +129,7 @@ class UserServiceApplicationTests {
         for (int i = 1; i <= 2; i++) {
             String requestBody = String.format("vehicleId=456&reviewTitle=Review%d&reviewBody=This is review %d for vehicle 456&starRating=3.%d", i, i, i);
             HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
-            ResponseEntity<Void> response = restTemplate.postForEntity("/addReview", request, Void.class);
+            ResponseEntity<Void> response = restTemplate.postForEntity("/user/addReview", request, Void.class);
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
         }
 
@@ -155,6 +165,8 @@ class UserServiceApplicationTests {
 
     }
 
+
+
     @Test
     void SuccessfullAuthReturn(){
 
@@ -163,12 +175,56 @@ class UserServiceApplicationTests {
 
     }
 
+    
     @Test
+    /*
+     * Make sure the auth returns a 401 unauthorized 
+     * 
+     * 
+     * 
+     */
     void UnsuccessfullAuthReturn(){
 
-        ResponseEntity<String> response = getAuthorizedResponse("/", HttpMethod.GET, String.class, "fail", "nopassword");
+        ResponseEntity<String> response = getAuthorizedResponse("/auth/", HttpMethod.GET, String.class, "asdasdasd", "not a real password");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+  
+
+    }
+       @Test
+    /*
+     * Make sure the auth returns a 401 unauthorized 
+     * 
+     * 
+     * 
+     */
+    void NoAuthReturn(){
+
+        ResponseEntity<String> response = getResponse("/auth/", HttpMethod.GET, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+  
+
+    }
+
+
+
+
+        @Test
+    /*
+     * Make sure the auth returns a 302 redirection 
+     * 
+     * 
+     * 
+     */
+    void RedirectToLoginPage(){
+
+        ResponseEntity<String> response = getResponse("/", HttpMethod.GET, String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).contains("<!DOCTYPE html>");
+        assertThat(response.getHeaders().getContentType().toString()).isEqualTo("text/html;charset=UTF-8");
+
+
+     
+
+  
 
     }
 }

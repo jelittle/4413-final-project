@@ -1,12 +1,12 @@
 services:
   user-service:
     build: .
-    image: user-service:latest
+    # image: user-service:latest
     container_name: user-service
     ports:
       - "8080:8080"
-    depends_on:
-      - user-db
+    # depends_on:
+    #   - user-db
 
 
   # user-db:

@@ -15,6 +15,7 @@ public class AuthenticationController implements IAuthenticationInterface {
     @ResponseStatus(HttpStatus.OK)
     public void Authenticate() {
         //does nothing just auth interface
+      
         
     }
     
