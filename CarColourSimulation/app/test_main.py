@@ -8,11 +8,11 @@ import time
 client = TestClient(app)
 #add tests: for grpc requirement
 def test_returns_image():
-    test_image_path = "./app/test_data/car2_3.jpg"
+    test_image_path = "./app/test_data/car2_1.jpg"
     with open(test_image_path, "rb") as f:
         response = client.post(
-            "/simulate_colour?r=108&g=148&b=252",
-            files={"file": ("car2_3.jpg", f, "image/jpeg")}
+            "/simulate_colour?r=202&g=45&b=52",
+            files={"file": ("car2_1.jpg", f, "image/jpeg")}
         )
     
     #if its an error print the error

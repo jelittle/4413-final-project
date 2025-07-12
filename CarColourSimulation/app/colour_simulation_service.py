@@ -22,7 +22,7 @@ class ColourSimulation(ColourSimulationInterface):
      
 
 
-        self.model = YoloService(model_path='./app/models/best.pt')
+        self.model = YoloService(model_path='./app/models/YOLOs_best.pt')
     def resize_masks_to_original(self,masks, orig_h, orig_w):
         """
         Resize a mask tensor to the original image size.
@@ -50,7 +50,6 @@ class ColourSimulation(ColourSimulationInterface):
         masks,labels=self.model.get_segmentation_masks(image)
         resized_masks = self.resize_masks_to_original(masks[0], image.height, image.width) #broken only works with one image
         image_matrix = torch.tensor(np.array(image))
-        
         #convert image bytes to numpy array
        
         
@@ -58,10 +57,11 @@ class ColourSimulation(ColourSimulationInterface):
         group_masks=self.stitch_masks(resized_masks, labels)
     
         mean_colour=self.compute_mean_colour(group_masks['car'], image_matrix)
+
         #compute transform from mean colour to target colour
         target_colour = torch.tensor(colour, dtype=torch.float32)
-        colour_transform = self.compute_colour_transform(mean_colour, target_colour)
-        new_image = self.apply_colour_transform(image_matrix,group_masks['car'], colour_transform)
+        # colour_transform = self.compute_colour_transform(mean_colour, target_colour)
+        new_image = self.apply_colour_transform_hsv(image_matrix,group_masks['car'], target_colour)
        
       
         new_image_pil = Image.fromarray(new_image.numpy().astype(np.uint8))
@@ -96,7 +96,7 @@ class ColourSimulation(ColourSimulationInterface):
         transformed_pixels = masked_pixels @ transform.T  
         
         
-        result_image[mask] = transformed_pixels
+        result_image[mask] = torch.tensor(transformed_pixels, dtype=result_image.dtype, device="cpu")
         
         #clamp
         result_image = torch.clamp(result_image, 0, 255)
@@ -105,10 +105,48 @@ class ColourSimulation(ColourSimulationInterface):
       
         return result_image
     
+    def modify_mask_by_mean_colour(self, mask: torch.Tensor, mean_colour: torch.Tensor) -> torch.Tensor:
+        """function to modify the mask by mean colour, does colour and distanc based matching"""
 
-       
-            
-       
+    def apply_colour_transform_hsv(self, image: torch.Tensor, mask, target) -> torch.Tensor:
+        """
+        input rgb image and target colour
+        Apply the colour transformation to the image.
+        """
+    
+        
+        # Create a copy of the original image
+        result_image = image.clone().float()
+        hsv_image = colour.RGB_to_HSV(result_image.numpy())
+        hsv_target = colour.RGB_to_HSV(target.numpy())
+        # Get the mask for the pixels to transform
+        mask = mask.squeeze(0) if mask.dim() == 3 else mask
+        
+        # Create masked version for debugging
+        masked_image = image.clone()
+        masked_image[~mask] = 0
+        
+     
+        #mask out the image
+        masked_hsv_pixels = hsv_image[mask]
+        
+        # Adjust the hue to match the target hue
+        target_hue = hsv_target[0]
+        masked_hsv_pixels[:, 0] = target_hue
+        
+        # Convert back to RGB
+        transformed_pixels = colour.HSV_to_RGB(masked_hsv_pixels)
+        
+        
+        result_image[mask] = torch.tensor(transformed_pixels, dtype=result_image.dtype, device="cpu")
+        
+        #clamp
+        result_image = torch.clamp(result_image, 0, 255)
+        
+
+    
+        return result_image
+
     def compute_colour_transform(self, mean_colour: torch.Tensor, target_colour: torch.Tensor) -> torch.Tensor:
         """
         create a colour space transformation from mean colour to target colour.
@@ -116,7 +154,7 @@ class ColourSimulation(ColourSimulationInterface):
         """
 
         #scale brightness of the colour then compute the transformation for the colours
-
+   
         scale_factors = target_colour / (mean_colour + 1e-8)
         
         transform = torch.diag(scale_factors)
@@ -138,7 +176,7 @@ class ColourSimulation(ColourSimulationInterface):
        
 
         mean_colour = masked_pixels.float().mean(dim=0)
-       
+     
         return mean_colour
 
     def stitch_masks(self, masks: list, labels: list) -> np.ndarray:
@@ -147,7 +185,7 @@ class ColourSimulation(ColourSimulationInterface):
         """
         # Define mask categories
         categories = {
-           'car' :[2]  # all lights
+           'car' :[0]  # all lights
         }
         
         # Initialize group masks
