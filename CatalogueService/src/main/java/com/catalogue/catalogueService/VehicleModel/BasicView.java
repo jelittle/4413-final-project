@@ -13,6 +13,9 @@ public class BasicView {
     private Integer modelYear;
     private Integer price;
     private Boolean isHotDeal;
+    private Integer quantity;
+    private String thumbnailPath;
+
 
 
     public BasicView(String make, String model, String bodyType, Integer modelYear, Integer price, Boolean isHotDeal) {

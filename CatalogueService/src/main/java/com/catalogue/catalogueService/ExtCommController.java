@@ -96,7 +96,7 @@ public class ExtCommController {
     @PostMapping("/vehicle")
     public String postNewVehicle(@RequestBody Vehicle vehicle){
 
-        vehicleRepo.save(vehicle);
+        mongoDAO.createVehicle(vehicle);
 
         return "Success";
     }

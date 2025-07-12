@@ -140,6 +140,10 @@ public class MongoDAO {
         return queryTemplate.find(query, Vehicle.class);
     }
 
+    public void createVehicle(Vehicle vehicle) {
+        queryTemplate.insert(vehicle);
+    }
+
 
 
     // =========================== UTILITY METHODS ===========================
