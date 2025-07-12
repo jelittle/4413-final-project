@@ -54,9 +54,9 @@ public class ECommerceUserDetailsService implements UserDetailsService {
 
     public void addReview(ECommerceUser user, String vehicleId, String reviewTitle, String reviewBody, Float starRating) {
         Review review = new Review();
-        
-       
-        
+
+
+
         review.setUser(user);
         review.setVehicleId(vehicleId);
         review.setReviewTitle(reviewTitle);
@@ -65,7 +65,6 @@ public class ECommerceUserDetailsService implements UserDetailsService {
 
 
         reviewRepository.save(review);
-
     }
 }
 

@@ -13,6 +13,7 @@
     <modules>
         <module>KafkaConfig</module>
         <module>CatalogueService</module>
+        <module>UserService</module>
     </modules>
 
 </project>

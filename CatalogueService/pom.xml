@@ -57,6 +57,7 @@
             <version>20240303</version>
         </dependency>
 
+		<!-- Kafka configuration files -->
 		<dependency>
 			<groupId>com.kafka</groupId>
 			<artifactId>KafkaConfig</artifactId>

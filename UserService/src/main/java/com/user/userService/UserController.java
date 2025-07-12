@@ -3,6 +3,8 @@ package com.user.userService;
 import com.user.userService.models.ECommerceUser;
 import com.user.userService.services.ECommerceUserDetailsService;
 
+import com.user.userService.services.kafka.EventProducer;
+import com.user.userService.services.kafka.ReviewPayload;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,6 +24,16 @@ public class UserController {
     @Autowired
     private ECommerceUserDetailsService userService;
 
+
+    // ----- KAFKA STUFF -----
+    private final EventProducer eventProducer;
+
+    @Autowired
+    public UserController(EventProducer eventProducer) {
+        this.eventProducer = eventProducer;
+    }
+    // ----- KAFKA DONE -----
+
     @GetMapping("/me")
     public ECommerceUser getCurrentUser(@AuthenticationPrincipal ECommerceUser user) {
         return user;
@@ -33,16 +45,14 @@ public class UserController {
     @PostMapping("/addReview")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void addReview(@AuthenticationPrincipal ECommerceUser user, 
-    @RequestParam String vehicleId,
-    @RequestParam String reviewTitle,
-    @RequestParam String reviewBody,
-    @RequestParam Float starRating
-    ){
-
-
+                            @RequestParam String vehicleId,
+                            @RequestParam String reviewTitle,
+                            @RequestParam String reviewBody,
+                            @RequestParam Float starRating){
         userService.addReview(user, vehicleId, reviewTitle, reviewBody, starRating);
 
-
+        // SENDING KAFKA REVIEW UPDATE
+        eventProducer.sendToCatalogueEvent(new ReviewPayload(starRating.intValue()));
 
     }
     
