@@ -12,7 +12,7 @@ def test_returns_image():
     with open(test_image_path, "rb") as f:
         response = client.post(
             "/simulate_colour?r=108&g=148&b=252",
-            files={"file": ("car2_1.jpg", f, "image/jpeg")}
+            files={"file": ("car2_3.jpg", f, "image/jpeg")}
         )
     
     #if its an error print the error

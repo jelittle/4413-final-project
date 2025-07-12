@@ -32,6 +32,8 @@ class YoloService(YoloInterface):
         # Extract masks and labels
         masks = []
         labels = []
+
+        
         
         for result in results:
             mask_set=[]

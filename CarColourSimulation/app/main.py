@@ -30,10 +30,12 @@ except Exception as e:
 async def simulate_colour(file: UploadFile, r:int,g:int,b:int):
     colour=np.array([r,g,b])
   
-    try:
-        image_bytes = await file.read()
-        modified_image_bytes = colour_simulation_service.simulate_colour_on_body(image_bytes, colour)
-        return StreamingResponse(io.BytesIO(modified_image_bytes.getvalue()), media_type="image/png")
-    except Exception as e:
-        logger.error(f"Error simulating colour: {e}")
-        raise HTTPException(status_code=500, detail=f"Error simulating colour: {e}")
+    # try:
+    image_bytes = await file.read()
+    modified_image_bytes = colour_simulation_service.simulate_colour_on_body(image_bytes, colour)
+
+    
+    return StreamingResponse(io.BytesIO(modified_image_bytes.getvalue()), media_type="image/png")
+    # except Exception as e:
+    #     logger.error(f"Error simulating colour: {e}")
+    #     raise HTTPException(status_code=500, detail=f"Error simulating colour: {e}")

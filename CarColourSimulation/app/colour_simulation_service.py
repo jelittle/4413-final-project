@@ -8,6 +8,7 @@ import torch
 import os
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
+import colour
 
 class ColourSimulation(ColourSimulationInterface):
     """Implementation of the ColourSimulation interface."""
@@ -52,20 +53,24 @@ class ColourSimulation(ColourSimulationInterface):
         
         #convert image bytes to numpy array
        
-       
+        
         labels=labels[0] #only works with one image
         group_masks=self.stitch_masks(resized_masks, labels)
-        mean_colour=self.compute_mean_colour(group_masks['body_panels'], image_matrix)
+    
+        mean_colour=self.compute_mean_colour(group_masks['car'], image_matrix)
         #compute transform from mean colour to target colour
         target_colour = torch.tensor(colour, dtype=torch.float32)
         colour_transform = self.compute_colour_transform(mean_colour, target_colour)
-        new_image = self.apply_colour_transform(image_matrix,group_masks['body_panels'], colour_transform)
+        new_image = self.apply_colour_transform(image_matrix,group_masks['car'], colour_transform)
        
       
         new_image_pil = Image.fromarray(new_image.numpy().astype(np.uint8))
         output_buffer = io.BytesIO()
         new_image_pil.save(output_buffer, format='PNG') 
+
         output_buffer.seek(0) 
+
+    
         return output_buffer
     def apply_colour_transform(self, image: torch.Tensor, mask, transform: torch.Tensor) -> torch.Tensor:
         """
@@ -111,6 +116,7 @@ class ColourSimulation(ColourSimulationInterface):
         """
 
         #scale brightness of the colour then compute the transformation for the colours
+
         scale_factors = target_colour / (mean_colour + 1e-8)
         
         transform = torch.diag(scale_factors)
@@ -141,16 +147,12 @@ class ColourSimulation(ColourSimulationInterface):
         """
         # Define mask categories
         categories = {
-            'doors': [1, 3, 6, 9, 11, 14],  
-            'body_panels': [0, 8, 16, 20, 21],  
-            'glass': [2, 10], 
-            'wheels': [22],    
-            'lights': [4, 5, 7, 12, 13, 15]  # all lights
+           'car' :[2]  # all lights
         }
         
         # Initialize group masks
         group_masks = {category: None for category in categories}
-        
+        print("---------------------------------------")
         for mask, label in zip(masks, labels):
             for category, label_list in categories.items():
                 if label in label_list:
